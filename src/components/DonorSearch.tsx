@@ -19,18 +19,18 @@ const DonorSearch = () => {
   const donors: Donor[] = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Ravinda Duljaya",
       bloodType: "A+",
-      location: "New York, NY",
+      location: "Dodangoda, Kalutara",
       distance: "2.5 km",
       lastDonation: "3 months ago",
       phone: "+1 234-567-8900"
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Eshen Dias",
       bloodType: "O-",
-      location: "Brooklyn, NY",
+      location: "Maradana, Colombo",
       distance: "4.2 km",
       lastDonation: "6 months ago",
       phone: "+1 234-567-8901"

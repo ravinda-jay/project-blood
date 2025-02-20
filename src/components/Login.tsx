@@ -5,10 +5,41 @@ import { LogIn, Mail, Lock } from 'lucide-react';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    setLoading(true);
+    setError('');
+
+    // Prepare data to send to backend
+    const credentials = { email, password };
+
+    try {
+      const response = await fetch('http://localhost:5001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      // Check if the response is ok (status code 200-299)
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // Handle the response, maybe redirect user
+        alert('Login successful!');
+      } else {
+        const data = await response.json();
+        setError(data.message || 'An error occurred');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Something went wrong, please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,6 +105,12 @@ const Login = () => {
             </div>
           </div>
 
+          {error && (
+            <div className="text-red-500 text-sm text-center mt-4">
+              <p>{error}</p>
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -98,8 +135,9 @@ const Login = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              disabled={loading}
             >
-              Sign in
+              {loading ? 'Logging in...' : 'Sign in'}
             </button>
           </div>
         </form>
